@@ -11,7 +11,7 @@
 }
 
 .navbar{
-    widht: 1100px;
+    widht: 1200px;
     height: 75px;
     margin: auto;
 }
@@ -31,4 +31,34 @@
     padding-top: 10px;
 }
 
-.menu
+.menu{
+    width: 400px;
+    float: left;
+    height: 70px;
+}
+
+ul{
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ul li{
+    list-style: none;
+    margin-left: 62px;
+    margin-top: 27px;
+    font-size: 14px;
+}
+
+ul li a{
+    text-decoration: none;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    transition: 0.4s;
+}
+
+ul li a:hover{
+    color: #f1c40f;
+}
