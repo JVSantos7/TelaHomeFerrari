@@ -1,0 +1,14 @@
+{
+  "name": "proj-ps-portfolio",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:frontend": "npm --prefix apps/frontend run dev",
+    "dev:backend": "npm --prefix apps/backend run dev",
+    "build": "npm --prefix apps/frontend run build",
+    "lint": "npm --prefix apps/frontend run lint"
+  }
+}
+
