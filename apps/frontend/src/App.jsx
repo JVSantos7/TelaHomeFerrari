@@ -1,121 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useMemo, useState } from "react";
+import "./App.css";
+import VideoCarrossel from "./components/videoCarrossel";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function clamp01(value) {
+  return Math.max(0, Math.min(1, value));
 }
 
-export default App
+export default function App() {
+  const [splashPhase, setSplashPhase] = useState("show"); 
+
+  useEffect(() => {
+    const hideTimer = window.setTimeout(() => setSplashPhase("hide"), 1400);
+    const goneTimer = window.setTimeout(() => setSplashPhase("gone"), 2000);
+    return () => {
+      window.clearTimeout(hideTimer);
+      window.clearTimeout(goneTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateShade = () => {
+      const doc = document.documentElement;
+      const scrollTop = window.scrollY || doc.scrollTop || 0;
+      const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
+      const t = clamp01(scrollTop / maxScroll);
+      const shade = 0.65 * t; 
+      doc.style.setProperty("--scrollShade", String(shade));
+    };
+
+    updateShade();
+    window.addEventListener("scroll", updateShade, { passive: true });
+    window.addEventListener("resize", updateShade);
+    return () => {
+      window.removeEventListener("scroll", updateShade);
+      window.removeEventListener("resize", updateShade);
+    };
+  }, []);
+
+  const showSplash = splashPhase !== "gone";
+  const splashClassName = useMemo(() => {
+    if (splashPhase === "hide") return "splash splash--hide";
+    return "splash";
+  }, [splashPhase]);
+
+  return (
+    <div className="app">
+      {showSplash ? (
+        <div className={splashClassName} aria-label="Abertura">
+          <img className="splash__logo" src="/logo01.jpg" alt="Cavalinho" />
+        </div>
+      ) : null}
+
+      <header className="navbar">
+        <div className="navbar__content">
+          <div className="navbar__logoWrap" aria-hidden="true">
+            <img className="navbar__logo" src="/logo01.jpg" alt="" />
+          </div>
+        </div>
+      </header>
+
+      <main className="page">
+        <section className="section section--carousel">
+          <VideoCarrossel />
+        </section>
+
+        <section className="section section--spacer" />
+      </main>
+    </div>
+  );
+}
+
