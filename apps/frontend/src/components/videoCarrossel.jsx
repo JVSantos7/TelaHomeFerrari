@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import video01 from "../assets/video/video01mp4.mp4";
 import video02 from "../assets/video/video02.mp4";
-import video03 from "../assets/video/video02.mp4";
+import video03 from "../assets/video/video03.mp4";
 
 const videos = [
   {
