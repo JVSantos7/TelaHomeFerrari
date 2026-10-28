@@ -27,10 +27,15 @@ npm install
 npm run dev
 ```
 
+Com os dois rodando, o Vite encaminha `/api/*` para o backend (`http://localhost:3333`).
+
 ## Estrutura
 
 - `apps/frontend`: aplicação web (React/Vite)
-- `apps/backend`: API (Express)
+  - `src/components`: `Navbar`, `Splash` (abertura animada) e `VideoCarrossel`
+  - `src/data`: dados estáticos (itens de navegação)
+  - `scripts/generate-favicons.mjs`: gera os favicons a partir da logo (`npm run generate:favicons`)
+- `apps/backend`: API (Express) — `GET /api/health`
 
 ## Notas
 
